@@ -1,6 +1,6 @@
 // Service worker: deja la app disponible sin internet.
 // Si cambias index.html o config.js, sube el número de VERSION para forzar la actualización.
-const VERSION = "v2";
+const VERSION = "v3";
 const CACHE = "gastos-viaje-" + VERSION;
 const SUPABASE_JS = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js";
 const SHELL = [
