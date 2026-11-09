@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Viaje Corea y Japón</title>
+<meta name="theme-color" content="#1E2A3A">
+<meta name="description" content="Gastos del viaje a Corea y Japón de Isa e Iván">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+/* Paleta: washi (papel), índigo (ai-iro), celadón coreano, mostaza suave y UN solo pop: rojo sol (Taegeuk / Hinomaru) */
+:root{
+  --bg:#F5F2EA; --card:#FCFAF5; --ink:#1E2A3A; --muted:#6B7685; --line:#E4DED0;
+  --primary:#2F4A6B; --primary-soft:#E3E9F0;
+  --pop:#E0483E; --pop-ink:#fff;
+  --ok:#5E9C8A; --warn:#D9A441; --bad:#C0392B;
+  --isa:#C98098; --ivan:#4F7CAC;
+  --shadow:0 1px 2px rgba(30,42,58,.06),0 4px 14px rgba(30,42,58,.06);
+  --r:16px;
+}
+:root[data-theme="dark"]{
+  --bg:#121722; --card:#1B2230; --ink:#ECE8DF; --muted:#98A2B3; --line:#2A3345;
+  --primary:#8FB0D8; --primary-soft:#243046; --pop:#F0574C; --ok:#7FBFAA; --warn:#E3B45A; --bad:#E5604F;
+  --isa:#D99BB0; --ivan:#7FA6D1; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121722; --card:#1B2230; --ink:#ECE8DF; --muted:#98A2B3; --line:#2A3345;
+    --primary:#8FB0D8; --primary-soft:#243046; --pop:#F0574C; --ok:#7FBFAA; --warn:#E3B45A; --bad:#E5604F;
+    --isa:#D99BB0; --ivan:#7FA6D1; --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+body{padding-bottom:calc(88px + env(safe-area-inset-bottom));min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.hidden{display:none!important}
+.wrap{max-width:560px;margin:0 auto;padding:0 14px}
+
+/* Encabezado */
+header.top{position:sticky;top:0;z-index:20;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 0 8px}
+header .row{display:flex;align-items:center;gap:8px}
+header h1{font-size:18px;margin:0;flex:1;font-weight:700;letter-spacing:.2px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:6px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);white-space:nowrap}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.pill.pend .dot{background:var(--warn)} .pill.off .dot{background:var(--muted)} .pill.err .dot{background:var(--bad)}
+.icon-btn{width:40px;height:40px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:18px;display:grid;place-items:center}
+.icon-btn.spin svg,.icon-btn.spin span{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Tarjetas */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin:10px 0;box-shadow:var(--shadow)}
+.card h2{font-size:13px;margin:0 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+.muted{color:var(--muted)} .small{font-size:13px}
+.big{font-size:26px;font-weight:700;letter-spacing:-.3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.person{display:flex;align-items:center;gap:8px;font-weight:600;margin-bottom:6px}
+.avatar{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700}
+.av-isa{background:var(--isa)} .av-ivan{background:var(--ivan)} .av-tot{background:var(--primary);color:var(--bg)}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden;margin:8px 0 6px}
+.bar>i{display:block;height:100%;background:var(--ok);border-radius:99px;transition:width .4s}
+.bar.warn>i{background:var(--warn)} .bar.bad>i{background:var(--bad)}
+.kv{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:2px 0}
+.kv b{font-variant-numeric:tabular-nums}
+.alert{border-left:4px solid var(--warn);background:var(--card);padding:10px 12px;border-radius:10px;margin:8px 0;font-size:14px}
+.alert.bad{border-color:var(--bad)}
+.segbtn{display:flex;background:var(--primary-soft);border-radius:12px;padding:3px;gap:3px}
+.segbtn button{flex:1;padding:9px 6px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted);min-height:40px}
+.segbtn button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+
+/* Balance */
+.balance{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border-radius:12px;font-weight:600;min-height:46px;background:var(--primary);color:var(--bg)}
+.btn.ghost{background:var(--primary-soft);color:var(--ink)}
+.btn.pop{background:var(--pop);color:var(--pop-ink)}
+.btn.danger{background:transparent;color:var(--bad);border:1px solid var(--bad)}
+.btn.block{width:100%}
+.btn:disabled{opacity:.5}
+
+/* Gráficas */
+.donut-wrap{display:flex;align-items:center;gap:14px}
+.donut{width:132px;height:132px;flex:none}
+.legend{flex:1;min-width:0;font-size:13.5px}
+.legend div{display:flex;align-items:center;gap:6px;padding:2px 0}
+.legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.legend span.n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.legend b{font-variant-numeric:tabular-nums}
+.hbar{margin:8px 0}
+.hbar .lbl{display:flex;justify-content:space-between;font-size:14px}
+.hbar .track{height:12px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:4px}
+.hbar .track i{display:block;height:100%;border-radius:99px;background:var(--primary)}
+
+/* Lista de gastos */
+.dayhead{font-size:13px;color:var(--muted);margin:14px 4px 6px;font-weight:600;display:flex;justify-content:space-between}
+.exp{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 12px;margin:6px 0;min-height:60px}
+.exp .emo{font-size:24px;width:36px;text-align:center;flex:none}
+.exp .mid{flex:1;min-width:0}
+.exp .t{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp .s{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.exp .amt{text-align:right;flex:none}
+.exp .amt b{display:block;font-variant-numeric:tabular-nums}
+.exp .amt span{font-size:12px;color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:99px;background:var(--primary-soft);margin-right:4px;color:var(--ink)}
+.tag.pend{background:var(--warn);color:#1E2A3A}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.filters label{font-size:12px;color:var(--muted);display:block}
+
+/* Formularios */
+input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);min-height:46px}
+textarea{min-height:60px;resize:vertical}
+label.f{display:block;font-size:12.5px;color:var(--muted);margin:12px 0 5px;font-weight:600}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--primary);outline-offset:1px}
+.amount-in{font-size:34px;font-weight:700;text-align:center;padding:14px;letter-spacing:-.5px}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 2px;border-radius:12px;background:var(--primary-soft);font-size:11.5px;min-height:64px;text-align:center;line-height:1.15;border:2px solid transparent}
+.chip .e{font-size:22px}
+.chip.on{border-color:var(--pop);background:var(--card);font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.two>*{min-width:0} input[type=date]{min-width:0;max-width:100%}
+
+/* Hoja (modal) */
+.overlay{position:fixed;inset:0;background:rgba(15,20,30,.55);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:560px;max-height:94vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.sheet .head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px}
+.sheet .head h3{margin:0;font-size:18px}
+.sheet .body{overflow:auto;padding:0 16px 10px;-webkit-overflow-scrolling:touch}
+.sheet .foot{padding:10px 16px calc(12px + env(safe-area-inset-bottom));display:flex;gap:8px;border-top:1px solid var(--line);background:var(--bg)}
+.sheet .foot .btn{flex:1}
+
+/* Navegación inferior */
+nav.bottom{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.bottom .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 78px 1fr 1fr;align-items:center}
+nav.bottom button.tab{padding:9px 0 8px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11.5px;color:var(--muted);min-height:58px}
+nav.bottom button.tab .e{font-size:21px}
+nav.bottom button.tab.on{color:var(--ink);font-weight:700}
+nav.bottom button.tab.on .e{transform:translateY(-1px)}
+.fab{width:62px;height:62px;border-radius:50%;background:var(--pop);color:#fff;font-size:34px;line-height:1;margin:-26px auto 0;box-shadow:0 6px 18px rgba(224,72,62,.45);display:grid;place-items:center}
+
+/* Toast */
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(98px + env(safe-area-inset-bottom));background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;z-index:60;font-size:14px;max-width:90%;box-shadow:var(--shadow)}
+
+/* Login */
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px}
+.login .logo{width:84px;height:84px;border-radius:22px;margin:0 auto 14px;display:block}
+.login h1{text-align:center;margin:0 0 4px}
+.login p{text-align:center;color:var(--muted);margin:0 0 20px}
+
+.rowline{display:flex;gap:8px;align-items:center;margin:6px 0}
+.rowline>*{min-width:0}
+.rowline .x{flex:none;width:44px;height:44px;border-radius:12px;background:var(--primary-soft);color:var(--bad);font-size:18px}
+details>summary{cursor:pointer;font-weight:600;padding:8px 0;list-style:none}
+details>summary::before{content:"▸ ";color:var(--muted)} details[open]>summary::before{content:"▾ "}
+</style>
+</head>
+<body>
+
+<!-- ============ Pantalla de acceso ============ -->
+<div id="loginView" class="login hidden">
+  <img class="logo" src="icon-192.png" alt="">
+  <h1>Viaje Corea y Japón</h1>
+  <p>Gastos de Isa e Iván · 12 al 29 de julio de 2027</p>
+  <div class="wrap" style="width:100%">
+    <div class="card">
+      <form id="loginForm" novalidate>
+        <label class="f" for="loginEmail" style="margin-top:0">Tu correo</label>
+        <input id="loginEmail" type="email" inputmode="email" autocomplete="username" placeholder="correo@gmail.com">
+        <label class="f" for="loginPass">Contraseña</label>
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres">
+        <button id="btnLogin" type="submit" class="btn pop block" style="margin-top:14px">Entrar</button>
+        <button id="btnSignup" type="button" class="btn ghost block" style="margin-top:8px">Es mi primera vez: crear mi cuenta</button>
+      </form>
+      <div id="loginMsg" class="small muted" style="margin-top:10px"></div>
+      <div id="pendingNote" class="small muted hidden" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ App ============ -->
+<div id="appView" class="hidden">
+  <header class="top">
+    <div class="wrap">
+      <div class="row">
+        <h1 id="pageTitle">Inicio</h1>
+        <span id="syncPill" class="pill"><span class="dot"></span><span id="syncTxt">Sincronizado</span></span>
+        <button id="btnRefresh" class="icon-btn" aria-label="Actualizar" title="Actualizar"><span>⟳</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- INICIO -->
+    <section id="tab-home">
+      <div id="homeAlerts"></div>
+      <div id="homeCards"></div>
+      <div class="card" id="dailyCard"></div>
+      <div class="card" id="balanceCard"></div>
+      <div class="segbtn" id="whoSeg" style="margin:12px 0 0">
+        <button data-v="all" class="on">Ambos</button><button data-v="isa">Isa</button><button data-v="ivan">Iván</button>
+      </div>
+      <div class="card"><h2>Gasto por categoría</h2><div id="catChart"></div></div>
+      <div class="card"><h2>Gasto por país</h2><div id="countryChart"></div></div>
+      <div class="card"><h2>Efectivo gastado por moneda</h2><div id="cashChart"></div></div>
+      <div class="card"><h2>Por tarjeta / cuenta</h2><div id="accountChart"></div></div>
+      <div class="card"><h2>Últimos gastos</h2><div id="recentList"></div>
+        <button class="btn ghost block" id="btnSeeAll" style="margin-top:8px">Ver todos</button></div>
+    </section>
+
+    <!-- GASTOS -->
+    <section id="tab-list" class="hidden">
+      <details class="card" id="filtersBox">
+        <summary>Filtros <span id="filtCount" class="muted small"></span></summary>
+        <div class="filters">
+          <div><label>Día</label><input type="date" id="fDay"></div>
+          <div><label>Categoría</label><select id="fCat"></select></div>
+          <div><label>País</label><select id="fCountry"><option value="">Todos</option><option value="kr">🇰🇷 Corea</option><option value="jp">🇯🇵 Japón</option><option value="otro">🌎 Otro</option></select></div>
+          <div><label>Quién pagó</label><select id="fPaid"><option value="">Todos</option><option value="isa">Isa</option><option value="ivan">Iván</option></select></div>
+          <div style="grid-column:1/3"><label>Para quién</label><select id="fFor"><option value="">Todos</option><option value="isa">Isa</option><option value="ivan">Iván</option><option value="compartido">Compartido</option></select></div>
+        </div>
+        <button class="btn ghost block" id="btnClearFilters" style="margin-top:10px">Quitar filtros</button>
+      </details>
+      <div id="listTotal" class="muted small" style="margin:4px 4px 0"></div>
+      <div id="fullList"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="tab-settings" class="hidden"></section>
+  </main>
+
+  <nav class="bottom"><div class="in">
+    <button class="tab on" data-tab="home"><span class="e">🏠</span>Inicio</button>
+    <button class="tab" data-tab="list"><span class="e">🧾</span>Gastos</button>
+    <button class="fab" id="fab" aria-label="Agregar gasto">+</button>
+    <button class="tab" data-tab="settings"><span class="e">⚙️</span>Ajustes</button>
+    <button class="tab" id="btnTheme"><span class="e" id="themeIcon">🌓</span>Tema</button>
+  </div></nav>
+</div>
+
+<div id="sheetRoot"></div>
+<div id="toast" class="hidden"></div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+"use strict";
+/* =====================================================================
+   CONSTANTES
+===================================================================== */
+const CFG = window.CONFIG || {};
+const EMAILS = { isa: (CFG.CORREO_ISA||"").toLowerCase(), ivan: (CFG.CORREO_IVAN||"").toLowerCase() };
+const NOMBRE = { isa: "Isa", ivan: "Iván", compartido: "Compartido 50/50" };
+const CATS = [
+  { n:"Vuelos", e:"✈️", c:"#4F7CAC" }, { n:"Hospedaje", e:"🏨", c:"#C98098" },
+  { n:"Transporte", e:"🚇", c:"#5E9C8A" }, { n:"Comida", e:"🍜", c:"#E0483E" },
+  { n:"Compras", e:"🛍️", c:"#D9A441" }, { n:"Actividades/Entradas", e:"🎟️", c:"#8E7CC3" },
+  { n:"SIM/Internet", e:"📶", c:"#6FA3B8" }, { n:"Otros", e:"📦", c:"#9AA3AF" },
+];
+const CAT_SHORT = { "Actividades/Entradas":"Actividades" };
+const catOf = n => CATS.find(c => c.n === n) || { n, e:(n==="Ajuste"?"🤝":"📦"), c:"#9AA3AF" };
+const PAISES = { kr:{n:"Corea", f:"🇰🇷", m:"KRW"}, jp:{n:"Japón", f:"🇯🇵", m:"JPY"}, otro:{n:"Otro", f:"🌎", m:"MXN"} };
+const SIMB = { MXN:"$", KRW:"₩", JPY:"¥" };
+const DEFAULTS = {
+  viaje: { inicio:"2027-07-12", fin:"2027-07-29", presupuesto:{ isa:120000, ivan:120000 } },
+  tramos: [ {pais:"kr",desde:"2027-07-12",hasta:"2027-07-16"}, {pais:"jp",desde:"2027-07-17",hasta:"2027-07-25"}, {pais:"kr",desde:"2027-07-26",hasta:"2027-07-29"} ],
+  tc: { KRW:0.0135, JPY:0.125, fecha:null },
+  ciudades: [ {n:"Seúl",p:"kr"},{n:"Busan",p:"kr"},{n:"Incheon",p:"kr"},{n:"Jeju",p:"kr"},{n:"Tokio",p:"jp"},{n:"Osaka",p:"jp"},{n:"Kioto",p:"jp"},{n:"Nara",p:"jp"},{n:"Fukuoka",p:"jp"} ],
+  cuentas: { tarjetas:["Tarjeta Isa","Tarjeta Iván"], cuentas:["Cuenta Isa","Cuenta Iván"] },
+  presCat: {},
+};
+
+/* =====================================================================
+   UTILIDADES
+===================================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => { const r = Math.random()*16|0; return (c==="x"?r:(r&3|8)).toString(16); }));
+const pad = n => String(n).padStart(2,"0");
+const ymd = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today = () => ymd(new Date());
+const parseD = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const diffDays = (a, b) => Math.round((parseD(b) - parseD(a)) / 864e5);
+const money = (n, dec=0) => new Intl.NumberFormat("es-MX", { style:"currency", currency:"MXN", minimumFractionDigits:dec, maximumFractionDigits:dec }).format(n || 0);
+const num = (n, dec=0) => new Intl.NumberFormat("es-MX", { minimumFractionDigits:dec, maximumFractionDigits:dec }).format(n || 0);
+const orig = (n, m) => m === "MXN" ? money(n, 2) : `${SIMB[m]}${num(n, 0)} ${m}`;
+const fmtDay = s => { const t = today(); const d = diffDays(t, s); const base = parseD(s).toLocaleDateString("es-MX", { weekday:"short", day:"numeric", month:"short" }); return d===0 ? "Hoy · "+base : d===-1 ? "Ayer · "+base : base; };
+const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+const round2 = n => Math.round((n + Number.EPSILON) * 100) / 100;
+let toastTimer;
+function toast(msg, ms=2800){ const t = $("#toast"); t.textContent = msg; t.classList.remove("hidden"); clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.add("hidden"), ms); }
+
+/* =====================================================================
+   ESTADO + COLA SIN CONEXIÓN
+   server = lo último que bajó de Supabase; queue = cambios locales pendientes.
+   Lo que se ve = server + queue aplicada encima.
+===================================================================== */
+const S = {
+  user: null,            // { email, who: 'isa'|'ivan' }
+  server: lsGet("cj_server", { gastos:[], cfg:{} }),
+  queue: lsGet("cj_queue", []),
+  failed: lsGet("cj_failed", []),
+  lastSync: lsGet("cj_last", null),
+  syncing: false, online: navigator.onLine, pullErr: false,
+  tab: "home", who: "all", filters: { day:"", cat:"", country:"", paid:"", for:"" },
+};
+const persist = () => { lsSet("cj_server", S.server); lsSet("cj_queue", S.queue); lsSet("cj_failed", S.failed); lsSet("cj_last", S.lastSync); };
+
+function gastos(){
+  const map = new Map(S.server.gastos.map(g => [g.id, g]));
+  for (const op of S.queue){
+    if (op.k === "g") map.set(op.row.id, { ...op.row, _pend:true });
+    else if (op.k === "gd") map.delete(op.id);
+  }
+  return [...map.values()];
+}
+function cfg(key){
+  let v = S.server.cfg[key] ?? DEFAULTS[key];
+  for (const op of S.queue) if (op.k === "c" && op.key === key) v = op.value;
+  return v;
+}
+function enqueue(op){
+  if (op.k === "g")  S.queue = S.queue.filter(o => !(o.k==="g" && o.row.id===op.row.id));
+  if (op.k === "gd") S.queue = S.queue.filter(o => !(o.k==="g" && o.row.id===op.id) && !(o.k==="gd" && o.id===op.id));
+  if (op.k === "c")  S.queue = S.queue.filter(o => !(o.k==="c" && o.key===op.key));
+  S.queue.push(op); persist(); renderAll(); flush();
+}
+const saveGasto = row => enqueue({ k:"g", row });
+const delGasto = id => enqueue({ k:"gd", id });
+const saveCfg = (key, value) => enqueue({ k:"c", key, value });
+
+/* ---------- Supabase ---------- */
+let sb = null;
+try {
+  if (window.supabase && CFG.SUPABASE_URL && !CFG.SUPABASE_URL.includes("TU-PROYECTO")) {
+    sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY, { auth:{ persistSession:true, autoRefreshToken:true, detectSessionInUrl:true } });
+  }
+} catch (e) { console.error(e); }
+
+const isNetErr = e => !e || !e.code && !e.status || /fetch|network|load failed/i.test(e.message || "");
+// Sin sesión válida Supabase respondería "vacío" por el RLS: nunca sincronizar en ese caso
+async function hasSession(){
+  try { const { data } = await sb.auth.getSession(); if (data.session) { if (S.user) S.user.expired = false; return true; } } catch {}
+  if (S.user) S.user.expired = true; renderSync(); return false;
+}
+
+async function flush(){
+  if (!sb || !S.user || !navigator.onLine || S.syncing || !S.queue.length) return;
+  if (!(await hasSession())) return;
+  S.syncing = true; renderSync();
+  try {
+    while (S.queue.length){
+      const op = S.queue[0];
+      let res;
+      if (op.k === "g") res = await sb.from("gastos").upsert(stripLocal(op.row));
+      else if (op.k === "gd") res = await sb.from("gastos").delete().eq("id", op.id);
+      else if (op.k === "c") res = await sb.from("config").upsert({ key:op.key, value:op.value, updated_by:S.user.email });
+      if (res.error){
+        if (isNetErr(res.error)) break;          // sin red: se reintenta luego
+        if (res.error.code === "PGRST301" || res.status === 401) { S.user.expired = true; break; }
+        S.failed.push({ op, msg:res.error.message });  // error de datos: no bloquear la cola
+        S.queue.shift(); toast("⚠️ Un cambio no se pudo subir: " + res.error.message, 5000);
+      } else S.queue.shift();
+      persist();
+    }
+  } catch (e) { /* red caída */ }
+  S.syncing = false; persist(); renderSync();
+  if (!S.queue.length) pull();
+}
+const stripLocal = r => { const { _pend, ...rest } = r; return rest; };
+
+async function pull(){
+  if (!sb || !S.user || !navigator.onLine) return;
+  if (!(await hasSession())) return;
+  try {
+    const [g, c] = await Promise.all([
+      sb.from("gastos").select("*").order("fecha", { ascending:false }).order("created_at", { ascending:false }),
+      sb.from("config").select("key,value"),
+    ]);
+    if (g.error || c.error) throw (g.error || c.error);
+    S.server.gastos = g.data.map(r => ({ ...r, monto:+r.monto, tc:+r.tc, monto_mxn:+r.monto_mxn }));
+    S.server.cfg = Object.fromEntries(c.data.map(r => [r.key, r.value]));
+    S.lastSync = Date.now(); S.pullErr = false; persist();
+  } catch (e) { S.pullErr = !isNetErr(e); }
+  renderAll();
+}
+
+let rtChan = null, rtTimer;
+function startRealtime(){
+  if (!sb || rtChan) return;
+  const bump = () => { clearTimeout(rtTimer); rtTimer = setTimeout(() => { if (!S.queue.length) pull(); else flush(); }, 350); };
+  rtChan = sb.channel("viaje")
+    .on("postgres_changes", { event:"*", schema:"public", table:"gastos" }, bump)
+    .on("postgres_changes", { event:"*", schema:"public", table:"config" }, bump)
+    .subscribe();
+}
+
+/* =====================================================================
+   REGLAS DEL NEGOCIO
+===================================================================== */
+const shareOf = (g, who) => g.tipo === "ajuste" ? 0 : (g.para_quien === "compartido" ? .5 : g.para_quien === who ? 1 : 0) * g.monto_mxn;
+const reales = () => gastos().filter(g => g.tipo !== "ajuste");
+function spent(who, list=reales()){ return list.reduce((a,g) => a + shareOf(g, who), 0); }
+function budgetOf(who){ return +(cfg("viaje").presupuesto?.[who] ?? 120000); }
+
+// Balance: >0  → Iván le debe a Isa; <0 → Isa le debe a Iván
+function balance(){
+  let net = 0;
+  for (const g of gastos()){
+    if (g.tipo === "ajuste") net += g.pagado_por === "isa" ? g.monto_mxn : -g.monto_mxn;
+    else net += (g.pagado_por === "isa" ? g.monto_mxn : 0) - shareOf(g, "isa");
+  }
+  return round2(net);
+}
+
+function defaultsForDate(dateStr){
+  const tr = cfg("tramos").filter(t => dateStr >= t.desde && dateStr <= t.hasta);
+  let pais = "otro";
+  if (tr.length === 1) pais = tr[0].pais;
+  else if (tr.length > 1){                         // día de cambio de país: mañana = primero, noche = segundo
+    const h = new Date().getHours();
+    pais = (dateStr === today() && h >= 14) ? tr[tr.length-1].pais : tr[0].pais;
+  }
+  return { pais, moneda: PAISES[pais].m };
+}
+function tcOf(moneda){ if (moneda === "MXN") return 1; return +cfg("tc")[moneda] || 0; }
+
+function daysInfo(){
+  const v = cfg("viaje"), t = today();
+  const total = diffDays(v.inicio, v.fin) + 1;
+  if (t < v.inicio) return { total, left: total, state:"antes" };
+  if (t > v.fin) return { total, left: 0, state:"despues" };
+  return { total, left: diffDays(t, v.fin) + 1, state:"durante" };
+}
+
+/* =====================================================================
+   RENDER
+===================================================================== */
+function renderSync(){
+  const p = $("#syncPill"), tx = $("#syncTxt"); if (!p) return;
+  p.className = "pill";
+  const n = S.queue.length;
+  if (!navigator.onLine){ p.classList.add("off"); tx.textContent = n ? `Sin conexión · ${n} pendiente${n>1?"s":""}` : "Sin conexión"; }
+  else if (S.syncing){ p.classList.add("pend"); tx.textContent = "Sincronizando…"; }
+  else if (n){ p.classList.add("pend"); tx.textContent = `${n} pendiente${n>1?"s":""}`; }
+  else if (S.user?.expired){ p.classList.add("err"); tx.textContent = "Inicia sesión para sincronizar"; }
+  else if (S.pullErr){ p.classList.add("err"); tx.textContent = "Error de sincronía"; }
+  else tx.textContent = "Sincronizado";
+  $("#btnRefresh").classList.toggle("spin", S.syncing);
+}
+
+function barClass(pct){ return pct >= 90 ? "bad" : pct >= 75 ? "warn" : ""; }
+function budgetCard(label, avCls, ini, budget, sp){
+  const pct = budget ? sp / budget * 100 : 0, av = budget - sp;
+  return `<div class="card"><div class="person"><span class="avatar ${avCls}">${ini}</span>${label}</div>
+    <div class="kv"><span class="muted">Presupuesto</span><b>${money(budget)}</b></div>
+    <div class="kv"><span class="muted">Gastado</span><b>${money(sp)}</b></div>
+    <div class="bar ${barClass(pct)}"><i style="width:${Math.min(100,Math.max(0,pct))}%"></i></div>
+    <div class="kv"><span>Disponible</span><b style="font-size:19px;color:${av<0?"var(--bad)":"inherit"}">${money(av)}</b></div>
+    <div class="small muted">${num(pct,0)}% usado</div></div>`;
+}
+
+function renderHome(){
+  const list = reales();
+  const si = spent("isa", list), sv = spent("ivan", list), bi = budgetOf("isa"), bv = budgetOf("ivan");
+  // Alertas por categoría
+  const pc = cfg("presCat") || {}; let al = "";
+  for (const [cat, lim] of Object.entries(pc)){
+    if (!(lim > 0)) continue;
+    const sp = list.filter(g => g.categoria === cat).reduce((a,g) => a + g.monto_mxn, 0), pct = sp / lim * 100;
+    if (pct >= 80) al += `<div class="alert ${pct>=100?"bad":""}">${catOf(cat).e} <b>${esc(cat)}</b>: ${money(sp)} de ${money(lim)} (${num(pct,0)}%)${pct>=100?" — ¡límite superado!":" — cerca del límite"}</div>`;
+  }
+  $("#homeAlerts").innerHTML = al;
+  $("#homeCards").innerHTML =
+    `<div class="grid2">${budgetCard("Isa","av-isa","I",bi,si)}${budgetCard("Iván","av-ivan","V",bv,sv)}</div>` +
+    budgetCard("Total del viaje","av-tot","∑",bi+bv,si+sv);
+
+  // Presupuesto diario
+  const di = daysInfo(), t = today();
+  const row = (who, av, ini) => {
+    const sp = spent(who, list), disp = budgetOf(who) - sp;
+    const hoy = di.state === "durante" ? list.filter(g => g.fecha === t).reduce((a,g) => a + shareOf(g, who), 0) : 0;
+    if (!di.left) return `<div class="kv"><span><span class="avatar ${av}" style="display:inline-grid;width:20px;height:20px;font-size:11px">${ini}</span> ${NOMBRE[who]}</span><b>—</b></div>`;
+    const allow = (disp + hoy) / di.left, pct = allow > 0 ? hoy / allow * 100 : (hoy > 0 ? 100 : 0);
+    return `<div style="margin:10px 0"><div class="kv"><span><span class="avatar ${av}" style="display:inline-grid;width:20px;height:20px;font-size:11px">${ini}</span> ${NOMBRE[who]}</span><b>${money(allow)} / día</b></div>
+      ${di.state==="durante" ? `<div class="bar ${barClass(pct)}"><i style="width:${Math.min(100,pct)}%"></i></div><div class="small muted">Hoy llevas ${money(hoy)} de ${money(allow)}</div>` : ""}</div>`;
+  };
+  const head = di.state === "antes" ? `Faltan ${diffDays(t, cfg("viaje").inicio)} días para salir · ${di.total} días de viaje` :
+               di.state === "durante" ? `Quedan ${di.left} día${di.left>1?"s":""} de viaje (contando hoy)` : "El viaje ya terminó";
+  $("#dailyCard").innerHTML = `<h2>Presupuesto diario disponible</h2><div class="small muted">${head}</div>${row("isa","av-isa","I")}${row("ivan","av-ivan","V")}`;
+
+  // Balance
+  const b = balance(), abs = Math.abs(b);
+  if (abs < 0.5) $("#balanceCard").innerHTML = `<h2>Balance</h2><div class="big" style="font-size:20px">🤝 Están a mano</div>`;
+  else {
+    const deudor = b > 0 ? "Iván" : "Isa", acreedor = b > 0 ? "Isa" : "Iván";
+    $("#balanceCard").innerHTML = `<h2>Balance</h2><div class="balance"><div><div class="big" style="font-size:22px">${money(abs)}</div>
+      <div class="small muted"><b>${deudor}</b> le debe a <b>${acreedor}</b></div></div>
+      <button class="btn ghost" id="btnSettle">Registrar pago</button></div>`;
+    $("#btnSettle").onclick = () => settle(b);
+  }
+
+  // Gráficas (según Ambos/Isa/Iván)
+  const w = S.who, val = g => w === "all" ? g.monto_mxn : shareOf(g, w);
+  const byCat = {}; list.forEach(g => byCat[g.categoria] = (byCat[g.categoria]||0) + val(g));
+  const items = Object.entries(byCat).filter(([,v]) => v > 0.005).sort((a,b) => b[1]-a[1]);
+  $("#catChart").innerHTML = donut(items);
+  const byC = { kr:0, jp:0, otro:0 }; list.forEach(g => byC[g.pais || "otro"] += val(g));
+  const mx = Math.max(1, ...Object.values(byC));
+  $("#countryChart").innerHTML = ["kr","jp","otro"].map(k => `<div class="hbar"><div class="lbl"><span>${PAISES[k].f} ${PAISES[k].n}</span><b>${money(byC[k])}</b></div><div class="track"><i style="width:${byC[k]/mx*100}%"></i></div></div>`).join("");
+  // Efectivo por moneda
+  const cash = { KRW:0, JPY:0, MXN:0 }, cashMx = { KRW:0, JPY:0, MXN:0 };
+  list.filter(g => g.metodo === "efectivo").forEach(g => { cash[g.moneda] += g.monto; cashMx[g.moneda] += g.monto_mxn; });
+  $("#cashChart").innerHTML = ["KRW","JPY","MXN"].map(m => `<div class="kv"><span>${m==="KRW"?"🇰🇷 Wones":m==="JPY"?"🇯🇵 Yenes":"🇲🇽 Pesos"}</span><b>${SIMB[m]}${num(cash[m], m==="MXN"?2:0)} <span class="muted small">≈ ${money(cashMx[m])}</span></b></div>`).join("");
+  // Por cuenta
+  const byA = {}; list.forEach(g => { const k = (g.metodo === "efectivo" ? "💵 " : "💳 ") + (g.cuenta || (g.metodo ? "Sin especificar" : "—")); if (g.metodo) byA[k] = (byA[k]||0) + g.monto_mxn; });
+  const ae = Object.entries(byA).sort((a,b) => b[1]-a[1]);
+  $("#accountChart").innerHTML = ae.length ? ae.map(([k,v]) => `<div class="kv"><span>${esc(k)}</span><b>${money(v)}</b></div>`).join("") : `<div class="muted small">Aún no hay gastos.</div>`;
+  // Recientes
+  const rec = gastos().sort(sortDesc).slice(0, 5);
+  $("#recentList").innerHTML = rec.length ? rec.map(expRow).join("") : `<div class="muted small">Todavía no hay gastos. Toca el + para agregar el primero.</div>`;
+  bindRows($("#recentList"));
+}
+
+function donut(items){
+  const tot = items.reduce((a,[,v]) => a + v, 0);
+  if (!tot) return `<div class="muted small">Aún no hay gastos.</div>`;
+  const R = 52, C = 2*Math.PI*R; let off = 0, arcs = "";
+  items.forEach(([n,v]) => { const len = v/tot*C; arcs += `<circle r="${R}" cx="70" cy="70" fill="none" stroke="${catOf(n).c}" stroke-width="22" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 70 70)"/>`; off += len; });
+  return `<div class="donut-wrap"><svg class="donut" viewBox="0 0 140 140" role="img" aria-label="Gasto por categoría">${arcs}
+    <text x="70" y="66" text-anchor="middle" font-size="11" fill="var(--muted)">Total</text><text x="70" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">${money(tot)}</text></svg>
+    <div class="legend">${items.map(([n,v]) => `<div><i style="background:${catOf(n).c}"></i><span class="n">${catOf(n).e} ${esc(CAT_SHORT[n]||n)}</span><b>${num(v/tot*100,0)}%</b></div>`).join("")}</div></div>
+    <div style="margin-top:8px">${items.map(([n,v]) => `<div class="kv small"><span>${catOf(n).e} ${esc(n)}</span><b>${money(v)}</b></div>`).join("")}</div>`;
+}
+
+const sortDesc = (a,b) => b.fecha.localeCompare(a.fecha) || (b.created_at||"").localeCompare(a.created_at||"");
+function expRow(g){
+  const c = catOf(g.tipo === "ajuste" ? "Ajuste" : g.categoria);
+  const para = g.tipo === "ajuste" ? `${NOMBRE[g.pagado_por]} → ${NOMBRE[g.para_quien]}` : (g.para_quien === "compartido" ? "50/50" : "Solo " + NOMBRE[g.para_quien]);
+  const sub = g.tipo === "ajuste" ? `${NOMBRE[g.pagado_por]} le pagó a ${NOMBRE[g.para_quien]}` :
+    [`Pagó ${NOMBRE[g.pagado_por]}`, para, g.metodo ? (g.metodo==="efectivo"?"💵":"💳") + (g.cuenta?" "+g.cuenta:"") : "", g.ciudad, g.nota].filter(Boolean).join(" · ");
+  const paisF = g.pais && g.pais !== "otro" ? PAISES[g.pais].f + " " : "";
+  return `<button class="exp" data-id="${g.id}"><span class="emo">${c.e}</span><span class="mid"><span class="t">${paisF}${esc(g.tipo==="ajuste"?"Pago de ajuste":CAT_SHORT[g.categoria]||g.categoria)}${g._pend?' <span class="tag pend">pendiente</span>':""}</span><span class="s" style="display:block">${esc(sub)}</span></span>
+    <span class="amt"><b>${money(g.monto_mxn)}</b>${g.moneda!=="MXN"?`<span>${orig(g.monto, g.moneda)}</span>`:""}</span></button>`;
+}
+function bindRows(root){ $$(".exp", root).forEach(b => b.onclick = () => openForm(gastos().find(g => g.id === b.dataset.id))); }
+
+function filtered(){
+  const f = S.filters;
+  return gastos().filter(g => (!f.day || g.fecha === f.day) && (!f.cat || g.categoria === f.cat) && (!f.country || (g.pais||"otro") === f.country) &&
+    (!f.paid || g.pagado_por === f.paid) && (!f.for || g.para_quien === f.for)).sort(sortDesc);
+}
+function renderList(){
+  const L = filtered(); const n = Object.values(S.filters).filter(Boolean).length;
+  $("#filtCount").textContent = n ? `(${n} activo${n>1?"s":""})` : "";
+  const tot = L.filter(g => g.tipo !== "ajuste").reduce((a,g) => a + g.monto_mxn, 0);
+  $("#listTotal").textContent = `${L.length} movimiento${L.length!==1?"s":""} · ${money(tot)}`;
+  let html = "", cur = "";
+  for (const g of L){
+    if (g.fecha !== cur){ cur = g.fecha; const dt = L.filter(x => x.fecha===cur && x.tipo!=="ajuste").reduce((a,x)=>a+x.monto_mxn,0); html += `<div class="dayhead"><span>${fmtDay(cur)}</span><span>${money(dt)}</span></div>`; }
+    html += expRow(g);
+  }
+  $("#fullList").innerHTML = html || `<div class="card muted">No hay gastos con esos filtros.</div>`;
+  bindRows($("#fullList"));
+}
+
+function renderAll(){
+  renderSync();
+  if (!S.user) return;
+  renderHome(); renderList();
+  if (S.tab === "settings" && !document.activeElement?.closest?.("#tab-settings")) renderSettings();
+}
+
+/* =====================================================================
+   FORMULARIO DE GASTO
+===================================================================== */
+function closeSheet(){ $("#sheetRoot").innerHTML = ""; }
+function sheet(title, bodyHtml, footHtml){
+  $("#sheetRoot").innerHTML = `<div class="overlay" id="ov"><div class="sheet" role="dialog" aria-modal="true"><div class="head"><h3>${title}</h3><button class="icon-btn" id="shClose" aria-label="Cerrar">✕</button></div><div class="body">${bodyHtml}</div><div class="foot">${footHtml||""}</div></div></div>`;
+  $("#shClose").onclick = closeSheet; $("#ov").onclick = e => { if (e.target.id === "ov") closeSheet(); };
+}
+const seg = (name, opts, val) => `<div class="segbtn" data-seg="${name}">${opts.map(([v,l]) => `<button type="button" data-v="${v}" class="${v===val?"on":""}">${l}</button>`).join("")}</div>`;
+function bindSeg(root, name, cb){ const el = $(`[data-seg="${name}"]`, root); $$("button", el).forEach(b => b.onclick = () => { $$("button", el).forEach(x => x.classList.toggle("on", x === b)); cb(b.dataset.v); }); }
+
+function openForm(g){
+  const edit = !!g && g.tipo !== "ajuste";
+  if (g && g.tipo === "ajuste"){ if (confirm("Este es un pago de ajuste. ¿Eliminarlo?")){ delGasto(g.id); toast("Pago de ajuste eliminado"); } return; }
+  const t = today();
+  const base = g ? { ...g } : { id:uuid(), fecha:t, ...defaultsForDate(t), categoria:"Comida", pagado_por:S.user.who, para_quien:"compartido", metodo:"tarjeta", cuenta:"", ciudad:"", nota:"", monto:"", tipo:"gasto" };
+  if (!g){ base.moneda = defaultsForDate(t).moneda; const lastCity = lsGet("cj_lastcity", ""); if (lastCity) base.ciudad = lastCity; }
+  const f = { ...base, tc:null, tcManual: edit };
+  if (edit) f.tc = base.tc; else f.tc = tcOf(f.moneda);
+  let touched = { pais: edit, moneda: edit };
+
+  const ciudades = () => cfg("ciudades");
+  const cuentasOpts = () => { const c = cfg("cuentas"); const arr = f.metodo === "efectivo" ? c.cuentas : c.tarjetas; return `<option value="">— Sin especificar —</option>` + [...new Set([...arr, ...(f.cuenta && !arr.includes(f.cuenta) ? [f.cuenta] : [])])].map(x => `<option ${x===f.cuenta?"selected":""}>${esc(x)}</option>`).join(""); };
+  const cityOpts = () => `<option value="">—</option>` + [...new Set([...ciudades().filter(c => c.p === f.pais || f.pais==="otro").map(c => c.n), ...(f.ciudad ? [f.ciudad] : [])])].map(x => `<option ${x===f.ciudad?"selected":""}>${esc(x)}</option>`).join("");
+
+  sheet(edit ? "Editar gasto" : "Nuevo gasto", `
+    <input id="fAmount" class="amount-in" inputmode="decimal" placeholder="0" autocomplete="off" value="${f.monto===""?"":f.monto}">
+    <div style="margin-top:8px">${seg("moneda", [["KRW","₩ Won"],["JPY","¥ Yen"],["MXN","$ MXN"]], f.moneda)}</div>
+    <div id="mxnPreview" class="small muted" style="text-align:center;margin:6px 0 0;min-height:20px"></div>
+    <label class="f">Categoría</label>
+    <div class="chips" id="catChips">${CATS.map(c => `<button type="button" class="chip ${c.n===f.categoria?"on":""}" data-c="${esc(c.n)}"><span class="e">${c.e}</span>${esc(CAT_SHORT[c.n]||c.n)}</button>`).join("")}</div>
+    <label class="f">¿Quién pagó?</label>${seg("paid", [["isa","Isa"],["ivan","Iván"]], f.pagado_por)}
+    <label class="f">¿Para quién es?</label>${seg("for", [["isa","Isa"],["ivan","Iván"],["compartido","50/50"]], f.para_quien)}
+    <label class="f">Método de pago</label>${seg("metodo", [["tarjeta","💳 Tarjeta"],["efectivo","💵 Efectivo"]], f.metodo)}
+    <label class="f" id="cuentaLbl"></label><select id="fCuenta"></select>
+    <label class="f">País</label>${seg("pais", [["kr","🇰🇷 Corea"],["jp","🇯🇵 Japón"],["otro","🌎 Otro"]], f.pais)}
+    <div class="two"><div><label class="f">Ciudad</label><select id="fCity"></select></div><div><label class="f">Fecha</label><input type="date" id="fDate" value="${f.fecha}"></div></div>
+    <label class="f">Nota (opcional)</label><input id="fNote" placeholder="Ej. ramen en Shibuya" value="${esc(f.nota||"")}">
+    <details style="margin-top:8px"><summary class="small">Tipo de cambio de este gasto</summary>
+      <div class="small muted">MXN por 1 ${"unidad"} de la moneda. Se guarda con el gasto. Si pagaste con tarjeta, puedes poner el que te cobró el banco.</div>
+      <input id="fTc" inputmode="decimal" value="${f.tc}"></details>`,
+    `${edit ? `<button class="btn danger" id="btnDel" style="flex:0 0 auto">🗑</button>` : ""}<button class="btn pop" id="btnSave">${edit?"Guardar cambios":"Guardar gasto"}</button>`);
+
+  const root = $("#sheetRoot");
+  const refresh = () => {
+    $("#cuentaLbl").textContent = f.metodo === "efectivo" ? "¿De qué cuenta se retiró el efectivo?" : "¿Con qué tarjeta se pagó?";
+    $("#fCuenta").innerHTML = cuentasOpts(); $("#fCity").innerHTML = cityOpts();
+    const amt = parseFloat(String($("#fAmount").value).replace(",", ".")) || 0;
+    const tc = parseFloat(String($("#fTc").value).replace(",", ".")) || 0;
+    $("#mxnPreview").textContent = f.moneda === "MXN" ? "" : (tc ? `≈ ${money(amt*tc, 2)} MXN  ·  1 ${f.moneda} = $${tc} MXN` : "⚠️ Sin tipo de cambio: actualízalo en Ajustes");
+  };
+  const setCurrency = m => { f.moneda = m; $$('[data-seg="moneda"] button', root).forEach(b => b.classList.toggle("on", b.dataset.v === m)); if (!f.tcManual) $("#fTc").value = tcOf(m); };
+  bindSeg(root, "moneda", m => { touched.moneda = true; f.tcManual = false; setCurrency(m); refresh(); });
+  bindSeg(root, "paid", v => f.pagado_por = v);
+  bindSeg(root, "for", v => f.para_quien = v);
+  bindSeg(root, "metodo", v => { f.metodo = v; f.cuenta = ""; refresh(); });
+  bindSeg(root, "pais", v => { touched.pais = true; f.pais = v; if (!touched.moneda) setCurrency(PAISES[v].m); f.ciudad = ""; refresh(); });
+  $$("#catChips .chip", root).forEach(b => b.onclick = () => { f.categoria = b.dataset.c; $$("#catChips .chip", root).forEach(x => x.classList.toggle("on", x === b)); });
+  $("#fAmount").addEventListener("input", refresh);
+  $("#fTc").addEventListener("input", () => { f.tcManual = true; refresh(); });
+  $("#fCuenta").onchange = e => f.cuenta = e.target.value;
+  $("#fCity").onchange = e => f.ciudad = e.target.value;
+  $("#fDate").onchange = e => {
+    f.fecha = e.target.value || today();
+    if (!edit){ const d = defaultsForDate(f.fecha); if (!touched.pais){ f.pais = d.pais; $$('[data-seg="pais"] button', root).forEach(b => b.classList.toggle("on", b.dataset.v === d.pais)); } if (!touched.moneda) setCurrency(d.moneda); refresh(); }
+  };
+  refresh();
+  if (!edit) setTimeout(() => $("#fAmount").focus(), 250);
+
+  if ($("#btnDel")) $("#btnDel").onclick = () => { if (confirm("¿Eliminar este gasto?")){ delGasto(g.id); closeSheet(); toast("Gasto eliminado"); } };
+  $("#btnSave").onclick = () => {
+    const monto = parseFloat(String($("#fAmount").value).replace(",", "."));
+    if (!(monto >= 0) || isNaN(monto) || $("#fAmount").value === ""){ toast("Escribe el monto"); $("#fAmount").focus(); return; }
+    const tc = f.moneda === "MXN" ? 1 : parseFloat(String($("#fTc").value).replace(",", "."));
+    if (!(tc > 0)){ toast("Falta el tipo de cambio (Ajustes → actualizar)"); return; }
+    const row = {
+      id: f.id, fecha: f.fecha || today(), monto: round2(monto), moneda: f.moneda, categoria: f.categoria,
+      pagado_por: f.pagado_por, para_quien: f.para_quien, metodo: f.metodo, cuenta: f.cuenta || null,
+      ciudad: f.ciudad || null, pais: f.pais, nota: ($("#fNote").value || "").trim() || null,
+      tc, monto_mxn: round2(monto * tc), tipo: "gasto",
+      registrado_por: edit ? (g.registrado_por || S.user.email) : S.user.email,
+      created_at: edit ? g.created_at : new Date().toISOString(),
+    };
+    if (row.ciudad) lsSet("cj_lastcity", row.ciudad);
+    saveGasto(row); closeSheet();
+    // Aviso de presupuesto por categoría
+    const lim = (cfg("presCat") || {})[row.categoria];
+    if (lim > 0){ const sp = reales().filter(x => x.categoria === row.categoria).reduce((a,x) => a + x.monto_mxn, 0), pct = sp/lim*100;
+      if (pct >= 80){ toast(`⚠️ ${row.categoria}: ${num(pct,0)}% de su presupuesto`, 4500); return; } }
+    toast(navigator.onLine ? "Gasto guardado ✓" : "Guardado sin conexión ✓ (se subirá solo)");
+  };
+}
+
+function settle(b){
+  const abs = Math.abs(b), deudor = b > 0 ? "ivan" : "isa", acreedor = b > 0 ? "isa" : "ivan";
+  if (!confirm(`${NOMBRE[deudor]} le paga ${money(abs, 2)} a ${NOMBRE[acreedor]}.\nEsto deja el balance en cero. ¿Registrar?`)) return;
+  saveGasto({ id:uuid(), fecha:today(), monto:abs, moneda:"MXN", categoria:"Ajuste", pagado_por:deudor, para_quien:acreedor, metodo:null, cuenta:null,
+    ciudad:null, pais:"otro", nota:"Pago de ajuste", tc:1, monto_mxn:abs, tipo:"ajuste", registrado_por:S.user.email, created_at:new Date().toISOString() });
+  toast("Pago de ajuste registrado ✓");
+}
+
+/* =====================================================================
+   AJUSTES
+===================================================================== */
+function renderSettings(){
+  const v = cfg("viaje"), tr = cfg("tramos"), tc = cfg("tc"), ci = cfg("ciudades"), cu = cfg("cuentas"), pc = cfg("presCat") || {};
+  const theme = lsGet("cj_theme", "auto");
+  $("#tab-settings").innerHTML = `
+  <div class="card"><h2>Sesión</h2><div class="kv"><span>Conectado como</span><b>${esc(S.user.email)}</b></div>
+    <div class="small muted">Eres <b>${NOMBRE[S.user.who]}</b>. Último sync: ${S.lastSync ? new Date(S.lastSync).toLocaleString("es-MX") : "nunca"}</div>
+    ${S.failed.length ? `<div class="alert bad small">${S.failed.length} cambio(s) no se pudieron subir. <button class="btn ghost" id="btnFailed" style="min-height:36px;padding:6px 10px">Ver</button></div>` : ""}
+    <button class="btn ghost block" id="btnLogout" style="margin-top:10px">Cerrar sesión</button></div>
+
+  <div class="card"><h2>Viaje y presupuesto</h2>
+    <div class="two"><div><label class="f" style="margin-top:0">Inicio</label><input type="date" id="sIni" value="${v.inicio}"></div><div><label class="f" style="margin-top:0">Fin</label><input type="date" id="sFin" value="${v.fin}"></div></div>
+    <div class="two"><div><label class="f">Presupuesto Isa (MXN)</label><input id="sBi" inputmode="decimal" value="${v.presupuesto.isa}"></div><div><label class="f">Presupuesto Iván (MXN)</label><input id="sBv" inputmode="decimal" value="${v.presupuesto.ivan}"></div></div>
+    <button class="btn block" id="btnSaveViaje" style="margin-top:12px">Guardar</button></div>
+
+  <div class="card"><h2>Tramos (país por fecha)</h2>
+    <div class="small muted">Define dónde estarán cada día. La app elige país y moneda según la fecha del gasto. Los tramos pueden compartir un día (viaje): ese día propone Corea en la mañana y Japón desde las 2 pm, y tú lo cambias si hace falta.</div>
+    <div id="tramosList"></div>
+    <div class="rowline"><button class="btn ghost" id="btnAddTramo" style="flex:1">+ Agregar tramo</button><button class="btn" id="btnSaveTramos" style="flex:1">Guardar tramos</button></div></div>
+
+  <div class="card"><h2>Tipo de cambio (MXN por 1 unidad)</h2>
+    <div class="two"><div><label class="f" style="margin-top:0">1 KRW (won)</label><input id="sKrw" inputmode="decimal" value="${tc.KRW}"></div><div><label class="f" style="margin-top:0">1 JPY (yen)</label><input id="sJpy" inputmode="decimal" value="${tc.JPY}"></div></div>
+    <div class="small muted" style="margin-top:6px">${tc.fecha ? "Actualizado: " + new Date(tc.fecha).toLocaleString("es-MX") : "Valores aproximados (nunca actualizado)."} Cada gasto guarda el tipo de cambio del momento en que se registró.</div>
+    <div class="rowline"><button class="btn ghost" id="btnFx" style="flex:1">🔄 Actualizar en línea</button><button class="btn" id="btnSaveFx" style="flex:1">Guardar manual</button></div></div>
+
+  <div class="card"><h2>Presupuesto por categoría (opcional, MXN)</h2>
+    <div class="small muted">Se avisa al llegar al 80% y al pasarse. Déjalo vacío si no quieres límite.</div>
+    ${CATS.map(c => `<div class="rowline"><span style="flex:1">${c.e} ${esc(c.n)}</span><input style="width:130px" inputmode="decimal" data-pc="${esc(c.n)}" value="${pc[c.n] || ""}" placeholder="Sin límite"></div>`).join("")}
+    <button class="btn block" id="btnSavePc" style="margin-top:10px">Guardar presupuestos</button></div>
+
+  <div class="card"><h2>Ciudades</h2><div id="ciList"></div>
+    <div class="rowline"><input id="newCity" placeholder="Nueva ciudad"><select id="newCityP" style="width:120px"><option value="kr">🇰🇷 Corea</option><option value="jp">🇯🇵 Japón</option></select></div>
+    <button class="btn ghost block" id="btnAddCity">+ Agregar ciudad</button></div>
+
+  <div class="card"><h2>Tarjetas y cuentas</h2>
+    <label class="f" style="margin-top:0">Tarjetas (una por línea)</label><textarea id="sCards" rows="3">${esc(cu.tarjetas.join("\n"))}</textarea>
+    <label class="f">Cuentas de donde se retira efectivo (una por línea)</label><textarea id="sAccs" rows="3">${esc(cu.cuentas.join("\n"))}</textarea>
+    <button class="btn block" id="btnSaveAcc" style="margin-top:10px">Guardar</button></div>
+
+  <div class="card"><h2>Apariencia</h2>${seg("theme", [["auto","Auto"],["light","☀️ Claro"],["dark","🌙 Oscuro"]], theme)}</div>
+
+  <div class="card"><h2>Exportar</h2><div class="rowline"><button class="btn ghost" id="btnCsv" style="flex:1">📊 CSV (Excel)</button><button class="btn ghost" id="btnJson" style="flex:1">💾 Respaldo JSON</button></div></div>
+  <div class="small muted" style="text-align:center;margin:6px 0 20px">Sin internet todo se guarda en el teléfono y se sube solo.</div>`;
+
+  const R = $("#tab-settings");
+  // tramos
+  let trs = tr.map(t => ({ ...t }));
+  const drawTr = () => { $("#tramosList", R).innerHTML = trs.map((t,i) => `<div data-i="${i}" style="border-top:1px solid var(--line);padding:10px 0 4px;margin-top:6px"><div class="rowline"><select data-k="pais" style="flex:1"><option value="kr" ${t.pais==="kr"?"selected":""}>🇰🇷 Corea</option><option value="jp" ${t.pais==="jp"?"selected":""}>🇯🇵 Japón</option></select><button class="x" data-del="${i}" aria-label="Quitar tramo">✕</button></div><div class="two"><div><label class="f" style="margin-top:2px">Desde</label><input type="date" data-k="desde" value="${t.desde}"></div><div><label class="f" style="margin-top:2px">Hasta</label><input type="date" data-k="hasta" value="${t.hasta}"></div></div></div>`).join("") || `<div class="muted small">Sin tramos.</div>`;
+    $$("[data-k]", R).forEach(el => el.onchange = () => { const i = +el.closest("[data-i]").dataset.i; trs[i][el.dataset.k] = el.value; });
+    $$("[data-del]", R).forEach(b => b.onclick = () => { trs.splice(+b.dataset.del, 1); drawTr(); }); };
+  drawTr();
+  $("#btnAddTramo", R).onclick = () => { const last = trs[trs.length-1]; trs.push({ pais:last?(last.pais==="kr"?"jp":"kr"):"kr", desde:last?last.hasta:v.inicio, hasta:last?last.hasta:v.inicio }); drawTr(); };
+  $("#btnSaveTramos", R).onclick = () => { if (trs.some(t => !t.desde || !t.hasta || t.hasta < t.desde)){ toast("Revisa las fechas de los tramos"); return; } saveCfg("tramos", trs.sort((a,b) => a.desde.localeCompare(b.desde))); toast("Tramos guardados ✓"); };
+  // viaje
+  $("#btnSaveViaje", R).onclick = () => {
+    const bi = parseFloat($("#sBi", R).value), bv = parseFloat($("#sBv", R).value);
+    if (!(bi >= 0) || !(bv >= 0) || !$("#sIni", R).value || !$("#sFin", R).value) { toast("Revisa los datos"); return; }
+    saveCfg("viaje", { inicio:$("#sIni", R).value, fin:$("#sFin", R).value, presupuesto:{ isa:bi, ivan:bv } }); toast("Guardado ✓");
+  };
+  // tc
+  $("#btnSaveFx", R).onclick = () => { const k = parseFloat($("#sKrw", R).value.replace(",", ".")), j = parseFloat($("#sJpy", R).value.replace(",", ".")); if (!(k > 0) || !(j > 0)){ toast("Valores inválidos"); return; } saveCfg("tc", { KRW:k, JPY:j, fecha:cfg("tc").fecha }); toast("Tipo de cambio guardado ✓"); };
+  $("#btnFx", R).onclick = updateFx;
+  // presupuestos por categoría
+  $("#btnSavePc", R).onclick = () => { const o = {}; $$("[data-pc]", R).forEach(i => { const n = parseFloat(i.value.replace(",", ".")); if (n > 0) o[i.dataset.pc] = n; }); saveCfg("presCat", o); toast("Presupuestos guardados ✓"); };
+  // ciudades
+  const drawCi = () => { $("#ciList", R).innerHTML = ci.map((c,i) => `<div class="rowline"><span style="flex:1">${PAISES[c.p].f} ${esc(c.n)}</span><button class="x" data-cdel="${i}">✕</button></div>`).join("");
+    $$("[data-cdel]", R).forEach(b => b.onclick = () => { const next = ci.filter((_,i) => i !== +b.dataset.cdel); saveCfg("ciudades", next); }); };
+  drawCi();
+  $("#btnAddCity", R).onclick = () => { const n = $("#newCity", R).value.trim(); if (!n) return; if (ci.some(c => c.n.toLowerCase() === n.toLowerCase())){ toast("Ya existe"); return; } saveCfg("ciudades", [...ci, { n, p:$("#newCityP", R).value }]); toast("Ciudad agregada ✓"); };
+  // cuentas
+  $("#btnSaveAcc", R).onclick = () => { const split = s => s.split("\n").map(x => x.trim()).filter(Boolean); saveCfg("cuentas", { tarjetas:split($("#sCards", R).value), cuentas:split($("#sAccs", R).value) }); toast("Guardado ✓"); };
+  // tema
+  bindSeg(R, "theme", v => { lsSet("cj_theme", v); applyTheme(); });
+  // sesión / export
+  $("#btnLogout", R).onclick = logout;
+  if ($("#btnFailed", R)) $("#btnFailed", R).onclick = () => { alert(S.failed.map(f => f.msg).join("\n")); if (confirm("¿Descartar estos avisos?")){ S.failed = []; persist(); renderSettings(); } };
+  $("#btnCsv", R).onclick = exportCsv; $("#btnJson", R).onclick = exportJson;
+}
+
+async function updateFx(){
+  const btn = $("#btnFx"); btn.disabled = true; btn.textContent = "Consultando…";
+  try {
+    const r = await fetch("https://open.er-api.com/v6/latest/MXN", { cache:"no-store" });
+    const j = await r.json();
+    if (j.result !== "success" || !j.rates?.KRW || !j.rates?.JPY) throw new Error("respuesta inválida");
+    const next = { KRW:+(1/j.rates.KRW).toFixed(6), JPY:+(1/j.rates.JPY).toFixed(6), fecha:new Date().toISOString() };
+    saveCfg("tc", next); toast(`Actualizado: 1 KRW = $${next.KRW} · 1 JPY = $${next.JPY}`, 4500);
+  } catch (e) { toast("No se pudo actualizar (¿sin internet?). Se usa el último guardado."); }
+  btn.disabled = false; btn.textContent = "🔄 Actualizar en línea";
+}
+
+/* ---------- Exportar ---------- */
+function download(name, mime, text, bom=""){
+  const blob = new Blob([bom + text], { type:mime }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+function exportCsv(){
+  const head = ["Fecha","Tipo","Categoría","Monto","Moneda","Tipo de cambio","Monto MXN","Pagó","Para quién","Método","Tarjeta/Cuenta","País","Ciudad","Nota","Registró"];
+  const q = v => { v = v ?? ""; v = String(v); return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const rows = gastos().sort((a,b) => a.fecha.localeCompare(b.fecha)).map(g => [g.fecha, g.tipo, g.categoria, g.monto, g.moneda, g.tc, g.monto_mxn, NOMBRE[g.pagado_por], NOMBRE[g.para_quien], g.metodo, g.cuenta, g.pais ? PAISES[g.pais].n : "", g.ciudad, g.nota, g.registrado_por].map(q).join(","));
+  download(`gastos-viaje-${today()}.csv`, "text/csv;charset=utf-8", [head.join(","), ...rows].join("\r\n"), "﻿");
+  toast("CSV generado ✓");
+}
+function exportJson(){
+  const data = { exportado:new Date().toISOString(), version:1, gastos:gastos().map(stripLocal), config:{ viaje:cfg("viaje"), tramos:cfg("tramos"), tc:cfg("tc"), ciudades:cfg("ciudades"), cuentas:cfg("cuentas"), presCat:cfg("presCat") } };
+  download(`respaldo-viaje-${today()}.json`, "application/json", JSON.stringify(data, null, 2));
+  toast("Respaldo generado ✓");
+}
+
+/* =====================================================================
+   TEMA, NAVEGACIÓN
+===================================================================== */
+function applyTheme(){
+  const t = lsGet("cj_theme", "auto"), r = document.documentElement;
+  if (t === "auto") r.removeAttribute("data-theme"); else r.setAttribute("data-theme", t);
+  const dark = t === "dark" || (t === "auto" && matchMedia("(prefers-color-scheme:dark)").matches);
+  $("#themeIcon").textContent = dark ? "🌙" : "☀️";
+  document.querySelector('meta[name="theme-color"]').content = dark ? "#121722" : "#1E2A3A";
+}
+const TITLES = { home:"Inicio", list:"Gastos", settings:"Ajustes" };
+function setTab(t){
+  S.tab = t; $$("main section").forEach(s => s.classList.toggle("hidden", s.id !== "tab-" + t));
+  $$("nav .tab[data-tab]").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+  $("#pageTitle").textContent = TITLES[t]; window.scrollTo(0, 0);
+  if (t === "settings") renderSettings();
+}
+
+/* =====================================================================
+   SESIÓN
+===================================================================== */
+const whoOf = email => (email||"").toLowerCase() === EMAILS.isa ? "isa" : (email||"").toLowerCase() === EMAILS.ivan ? "ivan" : null;
+
+function showLogin(note){
+  $("#appView").classList.add("hidden"); $("#loginView").classList.remove("hidden");
+  const p = $("#pendingNote"); if (S.queue.length){ p.textContent = `Tienes ${S.queue.length} cambio(s) guardado(s) en este teléfono; se subirán cuando entres.`; p.classList.remove("hidden"); } else p.classList.add("hidden");
+  $("#loginPass").value = "";
+  if (note) $("#loginMsg").textContent = note;
+  const last = lsGet("cj_email", ""); if (last && !$("#loginEmail").value) $("#loginEmail").value = last;
+}
+function enterApp(email, offline){
+  const who = whoOf(email);
+  if (!who){ toast("Ese correo no está autorizado"); if (sb) sb.auth.signOut(); showLogin("Ese correo no está autorizado en esta app."); return; }
+  S.user = { email:email.toLowerCase(), who, offline:!!offline }; lsSet("cj_email", S.user.email); lsSet("cj_user", { email:S.user.email });
+  $("#loginView").classList.add("hidden"); $("#appView").classList.remove("hidden");
+  setTab(S.tab); renderAll(); startRealtime(); flush().then(() => { if (!S.queue.length) pull(); });
+}
+async function logout(){
+  if (S.queue.length && !confirm(`Tienes ${S.queue.length} cambio(s) sin subir. Si cierras sesión se conservan en el teléfono hasta que vuelvas a entrar. ¿Cerrar sesión?`)) return;
+  try { if (rtChan){ sb.removeChannel(rtChan); rtChan = null; } if (sb) await sb.auth.signOut(); } catch {}
+  S.user = null; localStorage.removeItem("cj_user"); showLogin("Sesión cerrada.");
+}
+async function init(){
+  applyTheme();
+  if (!sb){ showLogin("Falta configurar config.js (URL y anon key de Supabase)."); return; }
+  sb.auth.onAuthStateChange((ev, session) => {
+    if (ev === "SIGNED_IN" && session?.user?.email && (!S.user || S.user.email !== session.user.email.toLowerCase() || S.user.offline || S.user.expired)) {
+      if (location.hash.includes("access_token")) history.replaceState(null, "", location.pathname + location.search);
+      enterApp(session.user.email, false);
+    }
+    if (ev === "SIGNED_OUT" && S.user && !S.user.offline) { S.user = null; showLogin(); }
+    if (ev === "TOKEN_REFRESHED" && S.user) S.user.expired = false;
+  });
+  let session = null;
+  try { session = (await sb.auth.getSession()).data.session; } catch {}
+  if (session?.user?.email) enterApp(session.user.email, false);
+  else {
+    const cached = lsGet("cj_user", null);
+    if (cached?.email && !navigator.onLine) enterApp(cached.email, true);   // abierto sin internet: usa lo guardado
+    else showLogin();
+  }
+}
+
+/* =====================================================================
+   EVENTOS
+===================================================================== */
+// Acceso con correo + contraseña (sin enviar correos). Solo Isa e Iván pueden tener cuenta.
+function loginInputs(){
+  const email = $("#loginEmail").value.trim().toLowerCase(), password = $("#loginPass").value, msg = $("#loginMsg");
+  if (!email || !password){ msg.textContent = "Escribe tu correo y tu contraseña."; return null; }
+  if (!whoOf(email)){ msg.textContent = "Ese correo no está autorizado en esta app."; return null; }
+  if (!navigator.onLine){ msg.textContent = "Necesitas internet para iniciar sesión."; return null; }
+  return { email, password, msg };
+}
+async function doLogin(){
+  const v = loginInputs(); if (!v) return;
+  $("#btnLogin").disabled = true; v.msg.textContent = "Entrando…";
+  const { error } = await sb.auth.signInWithPassword({ email:v.email, password:v.password });
+  $("#btnLogin").disabled = false;
+  if (error) v.msg.textContent = /invalid login/i.test(error.message) ? "Correo o contraseña incorrectos. Si es tu primera vez, toca «crear mi cuenta»." : "No se pudo entrar: " + error.message;
+  else lsSet("cj_email", v.email);   // onAuthStateChange abre la app
+}
+async function doSignup(){
+  const v = loginInputs(); if (!v) return;
+  if (v.password.length < 6){ v.msg.textContent = "La contraseña debe tener al menos 6 caracteres."; return; }
+  $("#btnSignup").disabled = true; v.msg.textContent = "Creando tu cuenta…";
+  try {
+    const r = await fetch(CFG.SUPABASE_URL + "/functions/v1/registro", { method:"POST",
+      headers:{ "Content-Type":"application/json", apikey:CFG.SUPABASE_ANON_KEY, Authorization:"Bearer " + CFG.SUPABASE_ANON_KEY },
+      body: JSON.stringify({ email:v.email, password:v.password }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok){ v.msg.textContent = j.error || "No se pudo crear la cuenta."; $("#btnSignup").disabled = false; return; }
+  } catch { v.msg.textContent = "No se pudo conectar. Revisa tu internet."; $("#btnSignup").disabled = false; return; }
+  $("#btnSignup").disabled = false; await doLogin();
+}
+$("#loginForm").addEventListener("submit", e => { e.preventDefault(); doLogin(); });
+$("#btnSignup").onclick = doSignup;
+$$("nav .tab[data-tab]").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+$("#fab").onclick = () => openForm(null);
+$("#syncPill").onclick = () => { if (S.user?.expired && navigator.onLine) showLogin("Tu sesión venció. Entra de nuevo; tus cambios pendientes se conservan."); };
+$("#btnSeeAll").onclick = () => setTab("list");
+$("#btnTheme").onclick = () => { const cur = lsGet("cj_theme", "auto"); const dark = cur === "dark" || (cur === "auto" && matchMedia("(prefers-color-scheme:dark)").matches); lsSet("cj_theme", dark ? "light" : "dark"); applyTheme(); if (S.tab === "settings") renderSettings(); };
+$("#btnRefresh").onclick = async () => { if (!navigator.onLine){ toast("Sin conexión"); return; } await flush(); await pull(); toast(S.pullErr ? "No se pudo actualizar" : "Actualizado ✓", 1800); };
+$$("#whoSeg button").forEach(b => b.onclick = () => { S.who = b.dataset.v; $$("#whoSeg button").forEach(x => x.classList.toggle("on", x === b)); renderHome(); });
+// filtros
+const fillCats = () => { $("#fCat").innerHTML = `<option value="">Todas</option>` + CATS.map(c => `<option value="${esc(c.n)}">${c.e} ${esc(c.n)}</option>`).join("") + `<option value="Ajuste">🤝 Ajuste</option>`; };
+fillCats();
+[["fDay","day"],["fCat","cat"],["fCountry","country"],["fPaid","paid"],["fFor","for"]].forEach(([id,k]) => $("#"+id).onchange = e => { S.filters[k] = e.target.value; renderList(); });
+$("#btnClearFilters").onclick = () => { S.filters = { day:"", cat:"", country:"", paid:"", for:"" }; ["fDay","fCat","fCountry","fPaid","fFor"].forEach(id => $("#"+id).value = ""); renderList(); };
+
+window.addEventListener("online", () => { S.online = true; renderSync(); flush().then(() => pull()); });
+window.addEventListener("offline", () => { S.online = false; renderSync(); });
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && S.user) { renderHome(); flush().then(() => { if (!S.queue.length) pull(); }); } });
+setInterval(() => { if (S.user && navigator.onLine) { flush().then(() => { if (!S.queue.length) pull(); }); } }, 60000);
+matchMedia("(prefers-color-scheme:dark)").addEventListener?.("change", applyTheme);
+
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+init();
+</script>
+</body>
+</html>
